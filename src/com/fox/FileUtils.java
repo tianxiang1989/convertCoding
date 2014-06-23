@@ -23,24 +23,28 @@ public class FileUtils {
 
 	/**
 	 * 转码的对外方法
-	 * @param dirPath 需要转码的文件夹
-	 * @param decode 解码方式
-	 * @param encode 编码方式
+	 * 
+	 * @param dirPath
+	 *            需要转码的文件夹
+	 * @param decode
+	 *            解码方式
+	 * @param encode
+	 *            编码方式
 	 * @throws IOException
 	 */
-	public static synchronized void convertDirectory(String dirPath,String decode,String encode)
-			throws IOException {
+	public static synchronized void convertDirectory(String dirPath,
+			String decode, String encode) throws IOException {
 		File dir = new File(dirPath);
 		if (!dir.exists() && !dir.isDirectory()) {
 			throw new IOException("[" + dir + "] 不存在");
 		}
-		convert(dir,decode,encode);
+		convert(dir, decode, encode);
 	}
-	
+
 	/**
 	 * 遍历目录 [一级方法]
 	 */
-	private static void convert(File dir,String decode,String encode) {
+	private static void convert(File dir, String decode, String encode) {
 		if (dir.canRead() && dir.canWrite()) {
 			if (dir.isDirectory()) {
 				// Directory
@@ -48,7 +52,7 @@ public class FileUtils {
 				if (files != null) {
 					for (int i = 0; i < files.length; i++) {
 						// 递归 处理文件
-						convert(new File(dir, files[i]),decode,encode);
+						convert(new File(dir, files[i]), decode, encode);
 					}
 				}
 			} else {
@@ -65,12 +69,16 @@ public class FileUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * 解码编码文件
-	 * @param filePath 文件路径
-	 * @param decode 解码方式 [读]
-	 * @param encode 编码方式 [写]
+	 * 
+	 * @param filePath
+	 *            文件路径
+	 * @param decode
+	 *            解码方式 [读]
+	 * @param encode
+	 *            编码方式 [写]
 	 * @throws Exception
 	 */
 	private static void readFilePath(String filePath, String decode,
@@ -79,12 +87,14 @@ public class FileUtils {
 		FileInputStream fis = new FileInputStream(filePath);
 		InputStreamReader isr = new InputStreamReader(fis, decode);
 		BufferedReader br = new BufferedReader(isr);
-		File a = new File(filePath);
+		File originalFile = new File(filePath);
+
 		// 分离文件夹和文件名
-		String fileDir = a.getParent();
-		String fileName = a.getName();
+		String fileDir = originalFile.getParent();
+		String fileName = originalFile.getName();
 		// 新的文件夹命名为原文件名称加上_Convert
-		String dir3 = fileDir + "_Convert" + File.separator + fileName;
+		// String dir3 = fileDir + "_Convert" + File.separator + fileName;
+		String dir3 = fileDir + File.separator + fileName + "_Convert";
 		File file = new File(dir3);
 		if (!file.getParentFile().exists()) {
 			// 文件夹不存在则建立文件夹
@@ -93,24 +103,30 @@ public class FileUtils {
 			// 文件存在则删除文件
 			if (file.exists()) {
 				file.delete();
-			} else {
-				// 文件不存在建立文件
-				file.createNewFile();
 			}
+			// 文件不存在建立文件
 		}
 		String str = null;
 		while ((str = br.readLine()) != null) {
-			//遍历每一行，写入新文件
+			// 遍历每一行，写入新文件
 			saveFile(str, encode, dir3);
 		}
 		br.close();
+
+		// 改名为原文件名
+		originalFile.delete();
+		file.renameTo(originalFile);
 	}
 
 	/**
 	 * 指定编码写文件
-	 * @param fileContent 写入文件的内容
-	 * @param encode 编码方式 [写]
-	 * @param savePath 新文件的路径
+	 * 
+	 * @param fileContent
+	 *            写入文件的内容
+	 * @param encode
+	 *            编码方式 [写]
+	 * @param savePath
+	 *            新文件的路径
 	 * @return
 	 */
 	private static String saveFile(String fileContent, String encode,
@@ -136,7 +152,7 @@ public class FileUtils {
 	 * 测试用
 	 */
 	public static void main(String[] args) throws IOException {
-		//记录起始时间
+		// 记录起始时间
 		long startTime = System.currentTimeMillis();
 		Properties prop = System.getProperties();
 		// 获取桌面位置
@@ -148,11 +164,11 @@ public class FileUtils {
 		Scanner sca = new Scanner(System.in);
 		String dirConvert = sca.next();
 		String dirPath = sysDir + dirConvert;
-		String decode="UTF-8";
-		String encode="GBK";
-		convertDirectory(dirPath,decode,encode);
+		String decode = "UTF-8";
+		String encode = "GBK";
+		convertDirectory(dirPath, decode, encode);
 		System.out.println("done!");
-		//记录结束时间
+		// 记录结束时间
 		long endTime = System.currentTimeMillis();
 		System.out.println("转换完成，用时：" + (endTime - startTime) / 1000);
 	}
