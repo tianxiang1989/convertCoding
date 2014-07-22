@@ -157,19 +157,19 @@ public class FileUtils {
 		Properties prop = System.getProperties();
 		// 获取桌面位置
 		String sysDir = prop.getProperty("user.home") + "\\Desktop\\";
-		System.out.println("UTF-8转GBK编码");
 		System.out.println("请输入需要转换的文件夹名称：");
 		System.out.print(sysDir);
 		// 获取控制台输入
 		Scanner sca = new Scanner(System.in);
 		String dirConvert = sca.next();
 		String dirPath = sysDir + dirConvert;
-		String decode = "UTF-8";
-		String encode = "GBK";
+		String decode = "GBK"; //读
+		String encode = "UTF-8"; //写
+		System.out.println(decode+"转"+encode+"编码");
 		convertDirectory(dirPath, decode, encode);
 		System.out.println("done!");
 		// 记录结束时间
 		long endTime = System.currentTimeMillis();
-		System.out.println("转换完成，用时：" + (endTime - startTime) / 1000);
+		System.out.println("转换完成，用时：" + (endTime - startTime) / 1000+"秒");
 	}
 }
