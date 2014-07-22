@@ -152,8 +152,7 @@ public class FileUtils {
 	 * 测试用
 	 */
 	public static void main(String[] args) throws IOException {
-		// 记录起始时间
-		long startTime = System.currentTimeMillis();
+
 		Properties prop = System.getProperties();
 		// 获取桌面位置
 		String sysDir = prop.getProperty("user.home") + "\\Desktop\\";
@@ -163,9 +162,16 @@ public class FileUtils {
 		Scanner sca = new Scanner(System.in);
 		String dirConvert = sca.next();
 		String dirPath = sysDir + dirConvert;
+<<<<<<< HEAD
 		String decode = "GBK"; //读
 		String encode = "UTF-8"; //写
 		System.out.println(decode+"转"+encode+"编码");
+=======
+		String decode = "UTF-8";
+		String encode = "GBK";
+		// 记录起始时间
+		long startTime = System.currentTimeMillis();
+>>>>>>> 7aec2fc404201d477eec8744a5380bab8cbf74a1
 		convertDirectory(dirPath, decode, encode);
 		System.out.println("done!");
 		// 记录结束时间
