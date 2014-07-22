@@ -156,7 +156,7 @@ public class FileUtils {
 		Properties prop = System.getProperties();
 		// 获取桌面位置
 		String sysDir = prop.getProperty("user.home") + "\\Desktop\\";
-		System.out.println("请输入需要转换的文件夹名称：");
+		System.out.println("请输入需要转换的文件夹名称[回车确定]：");
 		System.out.print(sysDir);
 		// 获取控制台输入
 		Scanner sca = new Scanner(System.in);
